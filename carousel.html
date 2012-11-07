@@ -1,0 +1,50 @@
+<section>
+      <a href="#" class="leftBrowser directions">Left</a>
+      <div id="displayArea">
+        <ul id="results"></ul>
+      </div>
+      <a href="#" class="rightBrowser directions">Right</a>
+</section>
+
+<script>
+	var totalPages; //determine the total number of pages shown in the carousel - make sure the value is set here.
+	var pageNumber = 1; //sets the pagenumber on load.
+	var frameWidth = $('#displayArea').outerWidth(); //determins the width of the area that is visible to the user
+    widthResults = totalPages*frameWidth; //determines the width of #results
+    $('#results').css('width', widthResults); //sets the width of the result, which will be longer than the displayArea depending on the length of your results
+    
+    totalPages = '1' ? $('.directions').fadeOut() : $('.rightBrowser').fadeIn();
+
+    if (totalPages == '1'){
+    	$('.directions').fadeOut(); //if only 1 page then no need for browser arrows
+    } else {
+    	$('.rightBrowser').fadeIn(); //shows only the right arrow on initial load as there is no need for the left arrow
+    }
+
+    var leftMovement = '+='+frameWidth; //sets the amount the carousel should move when moving leftw
+    var rightMovement = '-='+frameWidth; //sets the amount the carousel should move when moving right
+
+    $('.rightBrowser').click(function()
+	{
+		$('ul#partnerResults').stop().animate({left: rightMovement}); //gives a scroll effect to the left
+		$('.leftBrowser').fadeIn(); // as soon you click right, option to go back appears
+	    pageNumber ++; // increases the page number as you click right
+	    if(pageNumber == totalPages) 
+	    { // reach the end of the carousel, prevent the user from going any further. 
+	      $('.rightBrowser').fadeOut();
+	    }
+	    return false;
+	  });
+  	$('.leftBrowser').click(function()
+    {
+    	$('ul#partnerResults').stop().animate({left: leftMovement}); //gives a scroll effect to the right
+    	$('.rightBrowser').fadeIn(); //ensures the right browser is still present. 
+    	pageNumber --; //decreases the page number as you click left. 
+      	if(pageNumber == 1) 
+      	{ //if returned to the beginning remove the ability to go back further
+        	$('.leftBrowser').fadeOut();
+      	}
+      	return false;
+  	});
+
+</script>
